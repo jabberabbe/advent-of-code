@@ -9,4 +9,5 @@ description = "Advent of Code 2020 problems"
 
 [dependencies]
 regex = "1.4.2"
+typed-arena = "2.0.1"
 
