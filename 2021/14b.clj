@@ -1,4 +1,4 @@
-(ns aoc.2021.14a
+(ns aoc.2021.14b
   (:require
     [clojure.string :as str]
     [clojure.java.io :as io]))
@@ -25,7 +25,6 @@
         ([result x] (let [l- @l]
                       (vreset! l x)
                       (if l- (xf result [l- x]) result)))))))
-
 (defn apply-rule [[a b]]
   (let [c (insertion-rules [a b])]
     (if c [a c] [a])))
@@ -34,11 +33,26 @@
     (adjacent-pairs)
     (mapcat apply-rule)))
 
-(defn update-freqs [freqs x]
-  (assoc! freqs x ((fnil inc 0) (freqs x))))
-(let [freqs (transduce
-              (apply comp (repeat 10 substitute-polymers))
-              (completing update-freqs persistent!) (transient {})
-              polymer-template)
-      counts (vals freqs)]
-  (println (- (apply max counts) (apply min counts))))
+(def evolve-pair
+  (memoize
+    (fn [input n]
+      (let [notlast (drop-last input)
+            freqs   (frequencies notlast)]
+        (if (= n 0)
+          [freqs]
+          (into [freqs]
+                (apply mapv (partial merge-with +)
+                       (for [pair (eduction
+                                    (comp substitute-polymers (adjacent-pairs))
+                                    input)]
+                         (evolve-pair pair (dec n))))))))))
+(defn evolve-string [input n]
+  (apply mapv
+         (partial merge-with +)
+         (map #(evolve-pair % n) (eduction (adjacent-pairs) input))))
+
+(println
+  (let [starting (conj (vec polymer-template) ::none)
+        final    (peek (evolve-string starting 40))
+        freqs    (vals final)]
+    (- (apply max freqs) (apply min freqs))))
