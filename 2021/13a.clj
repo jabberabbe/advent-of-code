@@ -1,3 +1,9 @@
+; SPDX-License-Identifier: MIT
+; Copyright (C) 2021 Tito Sacchi <tito@tilde.team>
+; WARNING: These solutions were written while I was still learning Clojure and
+; should by no means be taken as examples of good programming practice or fast
+; implementations.
+
 ; NOTE: This program requires preprocessing of the input. Lines containing
 ; "fold" should come first and there should be no blank lines in the input
 ; file. The required format can easily be obtained with the following

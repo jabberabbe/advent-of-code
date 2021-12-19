@@ -1,3 +1,9 @@
+; SPDX-License-Identifier: MIT
+; Copyright (C) 2021 Tito Sacchi <tito@tilde.team>
+; WARNING: These solutions were written while I was still learning Clojure and
+; should by no means be taken as examples of good programming practice or fast
+; implementations.
+
 (ns aoc.2021.08a
   (:require
     [clojure.string :as str]))
